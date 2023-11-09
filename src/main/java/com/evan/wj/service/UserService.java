@@ -15,6 +15,9 @@ public class UserService {
     @Autowired
     AdminRoleService adminRoleService;
 
+    @Autowired
+    AdminUserRoleService adminUserRoleService;
+
     public boolean isExit(String username) {
         User user = getByUserName(username);
         return null != user;
@@ -32,11 +35,23 @@ public class UserService {
         userDao.save(user);
     }
 
-//    public List<User> list(){
-//        List<User> users=userDao.findAll();
-//        users.forEach(user -> {
-//            List<AdminRole> roles=adminRoleService.listRoleByUser(user.getUsername());
-//            users.se
-//        });
-//    }
+    public List<User> list() {
+        List<User> users = userDao.list();
+        users.forEach(user -> {
+            List<AdminRole> roles;
+            roles = adminRoleService.listRoleByUser(user.getUsername());
+            user.setRoles(roles);
+        });
+        return users;
+    }
+    // UserService
+    public void editUser(User user) {
+        User userInDB = userDao.findByUsername(user.getUsername());
+        userInDB.setName(user.getName());
+        userInDB.setPhone(user.getPhone());
+        userInDB.setEmail(user.getEmail());
+        userDao.save(userInDB);
+        adminUserRoleService.saveRoleChanges(userInDB.getId(), user.getRoles());
+    }
+
 }
