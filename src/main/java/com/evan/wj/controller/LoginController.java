@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 public class LoginController {
@@ -49,4 +50,9 @@ public class LoginController {
         subject.logout();
         return ResultFactory.buildSuccessResult("成功登出");
     }
+
+//    @GetMapping(value = "/api/admin/user")
+//    public List<User> listUsers() throws Exception{
+//        return userService.list();
+//    }
 }
