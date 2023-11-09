@@ -1,18 +1,18 @@
 <script>
-import {createRouter} from '@/router'
+import {resetRouter} from '@/router'
 
 export default {
   name: 'Header',
   methods: {
     logout() {
-      var _this = this
+      const _this = this
       this.$axios.get('/logout').then(resp => {
-        if (resp && resp.data.state === 200) {
+        if (resp && resp.data.code === 200) {
+          console.log('Header.vue: exit')
           _this.$store.commit('logout')
           _this.$router.replace('/login')
           // 路由清空
-          const newRouter = createRouter()
-          _this.$router.matcher = newRouter.matcher
+          resetRouter()
         }
       }).catch(failResponse => {
       })
@@ -24,7 +24,7 @@ export default {
 <template>
   <el-card class="admin-header">
     <a href="/index">
-      <img src="../../assets/icon2.png" alt="" width="55px" style="float: left;margin-top: -5px;">
+      <img src="../../assets/icon2.png" alt="" width="615" style="float: left;margin-top: -5px;">
     </a>
     <span style="font-size: 32px;font-weight: bold;position:absolute;left: 100px">白  卷</span>
     <i class="el-icon-switch-button" v-on:click="logout" style="font-size: 40px;float: right"></i>
