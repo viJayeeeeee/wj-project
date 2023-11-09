@@ -10,11 +10,9 @@ import java.util.List;
 
 @Entity //实体类
 @Table(name = "user")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Data
 @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class User {
     @Id
@@ -35,4 +33,13 @@ public class User {
 
     @Transient
     List<AdminRole> roles;
+
+    public User(int id, String username, String name, String phone, String email, boolean enabled) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.enabled = enabled;
+    }
 }

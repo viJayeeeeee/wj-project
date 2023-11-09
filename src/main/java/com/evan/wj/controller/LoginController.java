@@ -50,9 +50,4 @@ public class LoginController {
         subject.logout();
         return ResultFactory.buildSuccessResult("成功登出");
     }
-
-//    @GetMapping(value = "/api/admin/user")
-//    public List<User> listUsers() throws Exception{
-//        return userService.list();
-//    }
 }

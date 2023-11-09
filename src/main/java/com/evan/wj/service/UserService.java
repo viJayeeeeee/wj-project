@@ -37,14 +37,14 @@ public class UserService {
 
     public List<User> list() {
         List<User> users = userDao.list();
-        users.forEach(user -> {
-            List<AdminRole> roles;
+        List<AdminRole> roles;
+        for (User user : users) {
             roles = adminRoleService.listRoleByUser(user.getUsername());
             user.setRoles(roles);
-        });
+        }
         return users;
     }
-    // UserService
+
     public void editUser(User user) {
         User userInDB = userDao.findByUsername(user.getUsername());
         userInDB.setName(user.getName());
@@ -52,6 +52,12 @@ public class UserService {
         userInDB.setEmail(user.getEmail());
         userDao.save(userInDB);
         adminUserRoleService.saveRoleChanges(userInDB.getId(), user.getRoles());
+    }
+
+    public void updateUserStatus(User user) {
+        User u = userDao.findByUsername(user.getUsername());
+        u.setEnabled(user.isEnabled());
+        userDao.save(u);
     }
 
 }

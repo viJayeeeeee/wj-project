@@ -45,7 +45,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 
         boolean needFilter = adminPermissionService.needFilter(requestAPI);
         if (!needFilter) {
-            System.out.printf("接口：%s，无需权限", requestAPI);
+            System.out.printf("接口：%s，无需权限\n", requestAPI);
             return true;
         } else {
             System.out.println("验证访问权限：" + requestAPI);
@@ -60,10 +60,10 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 
             }
             if (hasPermission) {
-                System.out.printf("访问权限：%s，验证成功！", requestAPI);
+                System.out.printf("访问权限：%s，验证成功！\n", requestAPI);
                 return true;
             } else {
-                System.out.printf("用户没有访问接口（%s）的权限", requestAPI);
+                System.out.printf("用户没有访问接口（%s）的权限\n", requestAPI);
                 return false;
             }
         }

@@ -23,8 +23,6 @@ public class RegisterController {
     public Result register(@RequestBody User user) {
         String username = user.getUsername();
         String password = user.getPassword();
-//        System.out.println(username);
-//        System.out.println(password);
 
         if(username.isEmpty() || password.isEmpty()) return ResultFactory.buildFailResult("用户名或密码不能为空！");
         username = HtmlUtils.htmlEscape(username);
