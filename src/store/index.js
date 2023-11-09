@@ -9,8 +9,7 @@ export default new Vuex.Store({
   },
   mutations: {
     login(state, data) {
-      console.log('store->index.js:')
-      console.log(data)
+      console.log('store/index.js -> login:' + data)
       state.username = data
       window.localStorage.setItem('username', JSON.stringify(data))
     },

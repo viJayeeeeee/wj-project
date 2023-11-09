@@ -9,7 +9,7 @@ import AdminIndex from '@/components/admin/AdminIndex.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const CreateRouter = () => new Router({
   mode: 'history',
   routes: [
     {
@@ -66,51 +66,11 @@ export default new Router({
   ]
 })
 
-export const createRouter = routes => new Router({
-  mode: 'history',
-  routes: [
-    {
-      path: '/',
-      name: 'index',
-      redirect: '/index',
-      component: AppIndex,
-      meta: {
-        requireAuth: true
-      }
-    },
-    {
-      path: '/home',
-      name: 'Home',
-      component: Home,
-      redirect: '/index',
-      children: [
-        {
-          path: '/index',
-          name: 'AppIndex',
-          component: AppIndex,
-          meta: {
-            requireAuth: true
-          }
-        },
-        {
-          path: '/library',
-          name: 'Library',
-          component: LibraryIndex,
-          meta: {
-            requireAuth: true
-          }
-        }
-      ]
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register
-    }
-  ]
-})
+const router = new CreateRouter()
+
+export function resetRouter() {
+  const newRouter = CreateRouter()
+  router.matcher = newRouter.matcher
+}
+
+export default router
