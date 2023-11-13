@@ -60,4 +60,11 @@ public class UserService {
         userDao.save(u);
     }
 
+    public void updateUserPassword(User user) {
+        User u = userDao.findByUsername(user.getUsername());
+        u.setPassword(user.getPassword());
+        u.setSalt(user.getSalt());
+        userDao.save(u);
+    }
+
 }
