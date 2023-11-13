@@ -2,11 +2,43 @@
 export default {
   name: 'UserProfile',
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码！'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码！'))
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入的密码不一致！'))
+      } else {
+        callback()
+      }
+    }
     return {
       users: [],
       roles: [],
       dialogFormVisible: false,
-      selectedUser: []
+      selectedUser: [],
+      resetFormVisible: false,
+      ruleForm: {
+        pass: '',
+        checkPass: ''
+      },
+      rules: {
+        pass: [
+          {validator: validatePass, trigger: 'blur'}
+        ],
+        checkPass: [
+          {validator: validatePass2, trigger: 'blur'}
+        ]
+      }
     }
   },
   mounted() {
@@ -30,8 +62,9 @@ export default {
       this.dialogFormVisible = true
       this.selectedUser = user
     },
-    resetPassword() {
-
+    resetPassword(username) {
+      console.log(username)
+      this.resetFormVisible = true
     },
     onSubmit(user) {
       // let _this = this
@@ -73,6 +106,36 @@ export default {
         user.enabled = true
         this.$alert('不能禁用管理员账户')
       }
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log('submit:' + valid)
+          console.log(this.ruleForm)
+          const _this = this
+          this.$axios.put('/admin/user/resetPassword', {
+            password: _this.ruleForm.checkPass,
+            username: _this.selectedUser.username
+          }).then(resp => {
+            if (resp && resp.data.code === 200) {
+              _this.$alert('success')
+              _this.resetForm(formName)
+              _this.resetFormVisible = false
+            } else {
+              _this.$alert('failure' + resp)
+            }
+          }).catch(e => {
+            _this.$alert('failure' + e)
+          })
+        } else {
+          console.log('ERROR submit:' + valid)
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      console.log('reset...')
+      this.$refs[formName].resetFields()
     }
   }
 }
@@ -80,6 +143,26 @@ export default {
 
 <template>
   <div>
+    <el-dialog
+      title="重置密码"
+      :visible.sync="resetFormVisible">
+      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="密码" prop="pass">
+          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        </el-form-item>
+        <!--      <el-form-item label="年龄" prop="age">-->
+        <!--        <el-input v-model.number="ruleForm.age"></el-input>-->
+        <!--      </el-form-item>-->
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button @click="resetForm('ruleForm')">清空</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
     <el-dialog
       title="修改用户信息"
       :visible.sync="dialogFormVisible">
@@ -96,9 +179,9 @@ export default {
         <el-form-item label="邮箱" label-width="120px" prop="email">
           <el-input v-model="selectedUser.email" autocomplete="off"></el-input>
         </el-form-item>
-        <!--        <el-form-item label="密码" label-width="120px" prop="password">-->
-        <!--          <el-button type="warning" @click="resetPassword(selectedUser.username)">重置密码</el-button>-->
-        <!--        </el-form-item>-->
+        <el-form-item label="密码" label-width="120px" prop="password">
+          <el-button type="warning" @click="resetPassword(selectedUser.username)">重置密码</el-button>
+        </el-form-item>
         <!--        <el-form-item label="角色分配" label-width="120px" prop="roles">-->
         <!--          <el-checkbox-group v-model="selectedRolesIds">-->
         <!--            <el-checkbox v-for="(role,i) in roles" :key="i" :label="role.id">{{ role.nameZh }}</el-checkbox>-->
