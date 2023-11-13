@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-row style="height: 840px;">
-      <search-bar @onSearch="searchResult" ref="searchBar"></search-bar>
+    <el-row style="height: 840px;" v-loading.body="bodyLoading">
+      <search-bar @onSearch="searchResult" ref="searchBar" v-loading="searchLoading"></search-bar>
       <el-tooltip effect="dark" placement="right"
-                  v-for="item in books.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                  v-for="item in books.slice((currentPage-1)*pageSize,currentPage*pageSize)"
                   :key="item.id">
         <p slot="content" style="font-size: 14px;margin-bottom: 6px;">{{ item.title }}</p>
         <p slot="content" style="font-size: 13px;margin-bottom: 6px">
@@ -32,7 +32,7 @@
       <el-pagination
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-size="pagesize"
+        :page-size="pageSize"
         :total="books.length">
       </el-pagination>
     </el-row>
@@ -60,7 +60,9 @@ export default {
       // ],
       books: [],
       currentPage: 1,
-      pagesize: 17
+      pageSize: 11,
+      searchLoading: false,
+      bodyLoading: false
     }
   },
   mounted: function () {
@@ -69,13 +71,17 @@ export default {
   },
   methods: {
     loadBooks() {
+      this.bodyLoading = true
       var _this = this
-      this.$axios.get('/books').then(resp => {
-        if (resp && resp.status === 200) {
-          _this.books = resp.data
-          // console.log('加载图书···')
-        }
-      })
+      setTimeout(() => {
+        this.$axios.get('/books').then(resp => {
+          if (resp && resp.status === 200) {
+            _this.books = resp.data
+            // console.log('加载图书···')
+          }
+        })
+        _this.bodyLoading = false
+      }, 1500)
     },
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage
@@ -83,13 +89,17 @@ export default {
     },
     searchResult() {
       console.log('搜索事件点击·')
+      this.searchLoading = true
       var _this = this
-      this.$axios
-        .get('/search?keywords=' + this.$refs.searchBar.keywords, {}).then(resp => {
-        if (resp && resp.status === 200) {
-          _this.books = resp.data
-        }
-      })
+      setTimeout(() => {
+        _this.$axios
+          .get('/search?keywords=' + this.$refs.searchBar.keywords, {}).then(resp => {
+          if (resp && resp.status === 200) {
+            _this.books = resp.data
+          }
+        })
+        this.searchLoading = false
+      }, 1500)
     },
     deleteBook(id) {
       this.$confirm('此操作将永久删除该书籍，是否继续？', '提示', {

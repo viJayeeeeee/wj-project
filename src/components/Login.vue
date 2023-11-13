@@ -41,7 +41,7 @@ export default {
         })
         .then(resp => {
           if (resp.data.code === 200) {
-            var data = resp.data.result
+            var data = resp.data.data
             _this.$store.commit('login', data)
             var path = this.$route.query.redirect
             this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})

@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     // el-menu激活框为当前路由
-    this.defaultActive = this.$route.path
+    this.defaultActive = '/' + this.$route.path.split('/')[1]
   },
   methods: {
     logout() {

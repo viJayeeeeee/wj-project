@@ -6,6 +6,9 @@ import Home from '../components/Home'
 import LibraryIndex from '../components/library/LibraryIndex'
 import Register from '../components/Register'
 import AdminIndex from '@/components/admin/AdminIndex.vue'
+import ArticleEditor from '@/components/admin/content/ArticleEditor.vue'
+import Articles from '@/components/jotter/Articles.vue'
+import ArticleDetails from '@/components/jotter/ArticleDetails.vue'
 
 Vue.use(Router)
 
@@ -36,6 +39,19 @@ const CreateRouter = () => new Router({
           }
         },
         {
+          path: '/jotter',
+          name: 'Jotter',
+          component: Articles,
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
+          path: '/jotter/article',
+          name: 'Article',
+          component: ArticleDetails
+        },
+        {
           path: '/library',
           name: 'Library',
           component: LibraryIndex,
@@ -59,6 +75,14 @@ const CreateRouter = () => new Router({
       path: '/admin',
       name: 'Admin',
       component: AdminIndex,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/admin/content/editor',
+      name: 'Editor',
+      component: ArticleEditor,
       meta: {
         requireAuth: true
       }
