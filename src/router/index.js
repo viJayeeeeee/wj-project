@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import AppIndex from '../components/home/Appindex'
-import Login from '../components/Login'
-import Home from '../components/Home'
-import LibraryIndex from '../components/library/LibraryIndex'
-import Register from '../components/Register'
-import AdminIndex from '@/components/admin/AdminIndex.vue'
-import ArticleEditor from '@/components/admin/content/ArticleEditor.vue'
-import Articles from '@/components/jotter/Articles.vue'
-import ArticleDetails from '@/components/jotter/ArticleDetails.vue'
+// import AppIndex from '../components/home/Appindex'
+// import Login from '../components/Login'
+// import Home from '../components/Home'
+// import LibraryIndex from '../components/library/LibraryIndex'
+// import Register from '../components/Register'
+// import AdminIndex from '@/components/admin/AdminIndex.vue'
+// import ArticleEditor from '@/components/admin/content/ArticleEditor.vue'
+// import Articles from '@/components/jotter/Articles.vue'
+// import ArticleDetails from '@/components/jotter/ArticleDetails.vue'
 
 Vue.use(Router)
 
@@ -19,7 +19,7 @@ const CreateRouter = () => new Router({
       path: '/',
       name: 'index',
       redirect: '/index',
-      component: AppIndex,
+      component: () => import('../components/home/Appindex'),
       meta: {
         requireAuth: true
       }
@@ -27,13 +27,13 @@ const CreateRouter = () => new Router({
     {
       path: '/home',
       name: 'Home',
-      component: Home,
+      component: () => import('@/components/home'),
       redirect: '/index',
       children: [
         {
           path: '/index',
           name: 'AppIndex',
-          component: AppIndex,
+          component: () => import('../components/home/Appindex'),
           meta: {
             requireAuth: true
           }
@@ -41,7 +41,7 @@ const CreateRouter = () => new Router({
         {
           path: '/jotter',
           name: 'Jotter',
-          component: Articles,
+          component: () => import('@/components/jotter/Articles'),
           meta: {
             requireAuth: true
           }
@@ -49,12 +49,12 @@ const CreateRouter = () => new Router({
         {
           path: '/jotter/article',
           name: 'Article',
-          component: ArticleDetails
+          component: () => import('@/components/jotter/ArticleDetails')
         },
         {
           path: '/library',
           name: 'Library',
-          component: LibraryIndex,
+          component: () => import('@/components/library/LibraryIndex'),
           meta: {
             requireAuth: true
           }
@@ -64,17 +64,17 @@ const CreateRouter = () => new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: () => import('@/components/Login')
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: () => import('@/components/Register')
     },
     {
       path: '/admin',
       name: 'Admin',
-      component: AdminIndex,
+      component: () => import('@/components/admin/AdminIndex.vue'),
       meta: {
         requireAuth: true
       }
@@ -82,7 +82,7 @@ const CreateRouter = () => new Router({
     {
       path: '/admin/content/editor',
       name: 'Editor',
-      component: ArticleEditor,
+      component: () => import('@/components/admin/content/ArticleEditor.vue'),
       meta: {
         requireAuth: true
       }

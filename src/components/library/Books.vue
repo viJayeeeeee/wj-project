@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row style="height: 840px;" v-loading.body="bodyLoading">
+    <el-row style="height: 105%;" v-loading.body="bodyLoading">
       <search-bar @onSearch="searchResult" ref="searchBar" v-loading="searchLoading"></search-bar>
       <el-tooltip effect="dark" placement="right"
                   v-for="item in books.slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -84,8 +84,12 @@ export default {
       }, 1500)
     },
     handleCurrentChange: function (currentPage) {
-      this.currentPage = currentPage
-      console.log(this.currentPage)
+      this.bodyLoading = true
+      setTimeout(() => {
+        this.currentPage = currentPage
+        this.bodyLoading = false
+        // console.log(this.currentPage)
+      }, 985)
     },
     searchResult() {
       console.log('搜索事件点击·')

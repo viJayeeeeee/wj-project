@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'article',
+  name: 'Article',
   data() {
     return {
       article: []
