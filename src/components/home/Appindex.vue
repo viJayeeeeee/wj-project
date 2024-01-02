@@ -37,11 +37,12 @@ export default {
 
 .container {
   width: 100%;
-  height: 200px;
+  height: 22%;
   position: fixed;
   z-index: -1;
   opacity: 0.37;
   bottom: 0;
   left: 0;
+  background: #409eff;
 }
 </style>
