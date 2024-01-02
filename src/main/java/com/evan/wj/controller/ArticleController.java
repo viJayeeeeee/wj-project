@@ -26,7 +26,7 @@ public class ArticleController {
     }
 
     //    @PutMapping("/api/admin/content/article")
-    @PostMapping("/api/admin/content/article")
+    @PutMapping("/api/admin/content/article")
     public Result saveArticle(@RequestBody Article article) {
         if (article.getArticleContentHtml().isEmpty()) {
             return ResultFactory.buildFailResult("文章正文为空！");
